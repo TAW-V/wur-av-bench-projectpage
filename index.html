@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WUR-AV-Bench: A Benchmark for Active Vision in Complex Greenhouse Environments</title>
+<meta name="description" content="WUR-AV-Bench: a real-world benchmark, dataset, and evaluation tools for active viewpoint planning in complex, heavily occluded greenhouse environments with tomato plants.">
+<!-- Social preview -->
+<meta property="og:title" content="WUR-AV-Bench: A Benchmark for Active Vision in Complex Greenhouse Environments">
+<meta property="og:description" content="A real-world benchmark for active viewpoint planning under severe occlusion: 25 tomato plants, 25,709 RGB-D viewpoints, point clouds, camera poses, and node-pose annotations.">
+<meta property="og:image" content="static/images/overview.png">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <h1><span class="name">WUR-AV-Bench</span><br>A Benchmark for Active Vision in Complex Greenhouse Environments</h1>
+    <p class="subtitle">A real-world benchmark, dataset, and evaluation suite for active viewpoint planning under severe occlusion.</p>
+
+    <div class="authors">
+      Thomas A. W. Versmissen<sup>1,2</sup>, &nbsp;Xin Wang<sup>1</sup>, &nbsp;Gert Kootstra<sup>1</sup>, &nbsp;Ricardo da Silva Torres<sup>2</sup>
+    </div>
+    <div class="affil"><sup>1</sup> Agricultural Biosystems Engineering, Wageningen University &amp; Research</div>
+    <div class="affil"><sup>2</sup> Artificial Intelligence Group, Wageningen University &amp; Research</div>
+
+    <!-- ============================================================
+         RESOURCE LINKS  —  fill in the href="#" placeholders once
+         each resource is public. Remove the "soon" class + <span class="tag">
+         when a link goes live.
+         ============================================================ -->
+    <div class="buttons">
+      <a class="btn soon" href="#" id="link-paper">
+        <span class="ic">&#128196;</span> Paper <span class="tag">soon</span>
+      </a>
+      <a class="btn soon" href="#" id="link-data">
+        <span class="ic">&#128190;</span> Dataset <span class="tag">soon</span>
+      </a>
+      <a class="btn soon" href="#" id="link-code-bench">
+        <span class="ic">&#128187;</span> Code: benchmark <span class="tag">soon</span>
+      </a>
+      <a class="btn soon" href="#" id="link-code-cocoeval">
+        <span class="ic">&#128187;</span> Code: coco eval <span class="tag">soon</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ OVERVIEW / HERO FIGURE ============ -->
+<section id="overview">
+  <div class="wrap">
+    <h2>Overview</h2>
+    <p class="lead">
+      Active vision is the process of moving a camera to resolve occlusions and gather more informative
+      views, which is important for robots operating in cluttered greenhouses. WUR-AV-Bench provides a
+      densely sampled real-world dataset and a four-task evaluation protocol for developing and comparing
+      active viewpoint-planning methods, without needing a physical robot.
+    </p>
+    <div class="hero-figure">
+      <figure>
+        <img src="static/images/overview.png" alt="Overview of the four-task active vision benchmark pipeline">
+        <figcaption>
+          Data are collected from 25 tomato plants with a robot-mounted RGB-D camera. A stratified RGB
+          subset is used for the image-level tasks (I and II). The full dataset, including RGB-D images, point
+          clouds, and camera poses, is used for the active-vision reconstruction tasks (III and IV).
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="abstract">
+      <h3>Abstract</h3>
+      <p>
+        We present WUR-AV-Bench, a benchmark consisting of a dataset and evaluation tools for developing,
+        evaluating, and comparing active viewpoint planning methods in complex greenhouse environments with
+        tomato plants subject to severe occlusions. The dataset comprises densely sampled viewpoints
+        containing RGB-D images, 3D point clouds, and camera poses, together with object-pose annotations
+        and per-object occlusion and complexity scores. The benchmark defines four progressively more
+        challenging tasks, requiring methods to detect leaf and tomato truss nodes in single images,
+        estimate their 2D orientation, and actively select informative viewpoints for 3D localization and
+        5D pose estimation under severe occlusion. These tasks enable systematic analysis of perception
+        accuracy, viewpoint planning efficiency, and robustness across different levels of scene complexity.
+        To demonstrate the benchmark, we evaluate two baseline methods: a random viewpoint selection method
+        and an active viewpoint selection method. Results are reported in terms of precision, recall, and
+        viewpoint efficiency across varying occlusion levels. The presented benchmark provides a systematic
+        and reproducible framework for evaluating active viewpoint planning methods in complex agricultural
+        environments.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DATASET ============ -->
+<section id="dataset">
+  <div class="wrap">
+    <h2>The Dataset</h2>
+    <p class="lead">
+      The data were recorded in a commercial-style greenhouse with tomato plants, across different
+      times of day, weather conditions, and lighting.
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="num">25</div><div class="lbl">tomato plants</div></div>
+      <div class="stat"><div class="num">25,709</div><div class="lbl">RGB-D viewpoints</div></div>
+      <div class="stat"><div class="num">4</div><div class="lbl">progressive tasks</div></div>
+      <div class="stat"><div class="num">5-DoF</div><div class="lbl">node pose labels</div></div>
+    </div>
+
+    <div class="feature" style="margin-top:38px">
+      <div class="txt">
+        <h3>What each viewpoint contains</h3>
+        <ul>
+          <li>An <strong>RGB image</strong></li>
+          <li>A <strong>structured 3D point cloud</strong></li>
+          <li>A <strong>camera pose</strong></li>
+        </ul>
+        <p style="color:var(--muted);margin-top:14px">
+          Every plant is annotated at its peduncle and petiole nodes, the junctions where trusses and
+          leaves attach to the stem, with full 5-DoF poses. Each node also has an occlusion score and each
+          plant a complexity score, which are used to stratify the evaluation.
+        </p>
+      </div>
+      <figure>
+        <img src="static/images/pointcloud.png" alt="Reconstructed 3D point cloud of a tomato plant">
+        <figcaption>A reconstructed plant point cloud showing the dense, self-occluding canopy.</figcaption>
+      </figure>
+    </div>
+
+    <div class="subcard">
+      <h3>Image-level evaluation subset (Tasks I and II)</h3>
+      <p>
+        A subset of RGB images sampled from the viewpoints is used for the image-level tasks. Every
+        node in these images is annotated with a segmentation mask and two keypoints, in four classes:
+        peduncle and petiole, each with a foreground and a background variant for the background-aware
+        evaluation.
+      </p>
+    </div>
+
+    <div class="subcard">
+      <h3>Detector-training dataset</h3>
+      <p>
+        Alongside the benchmark, we release a separate dataset with image-level annotations, namely
+        segmentation masks and keypoints for peduncles and petioles. It can be used to train the object
+        detectors that the active-vision tasks depend on.
+      </p>
+    </div>
+
+    <div class="subcard">
+      <h3>Data structure</h3>
+      <pre class="tree">
+dataset/
+├── task1_task2/
+│   └── evaluation/
+│       ├── images/                          RGB images for Tasks I and II
+│       └── labels/
+│           └── labels_backgroundaware.json  segmentation masks and keypoints, with
+│                                            foreground and background classes
+├── task3_task4/
+│   ├── labels/                              one CSV per plant with 5-DoF node poses and
+│   │                                        occlusion and complexity scores
+│   └── viewpoint_data/                      one folder per plant with point clouds, RGB
+│                                            images and camera poses, plus the detection
+│                                            filter parameters
+└── detector_train_set/
+    ├── images/                              RGB training images
+    └── labels/
+        └── annotations.json                 segmentation masks and keypoints for
+                                             peduncle and petiole</pre>
+    </div>
+
+    <div class="note">
+      The full dataset, including the image-level evaluation subset and the detector-training set, will
+      be published in a data archive together with the paper. The download link (Dataset button above)
+      will be added once the paper is published.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TASKS ============ -->
+<section id="tasks">
+  <div class="wrap">
+    <h2>Four Progressive Tasks</h2>
+    <p class="lead">Complexity increases from a single 2D image to full 5D pose estimation across many actively selected viewpoints.</p>
+    <div class="cards">
+      <div class="card">
+        <span class="tnum">Task I</span>
+        <h3>2D Object Detection</h3>
+        <p>Detect peduncles and petioles in single images, using a background-aware protocol that does not penalize correct but task-irrelevant background objects.</p>
+      </div>
+      <div class="card">
+        <span class="tnum">Task II</span>
+        <h3>2D Pose Estimation</h3>
+        <p>Localize each node and predict its 2D orientation from two keypoints, scored with a strict on-node distance criterion.</p>
+      </div>
+      <div class="card">
+        <span class="tnum">Task III</span>
+        <h3>3D Reconstruction</h3>
+        <p>Actively select viewpoints to localize nodes in 3D with as few observations as possible, rewarding both accuracy and viewpoint efficiency.</p>
+      </div>
+      <div class="card">
+        <span class="tnum">Task IV</span>
+        <h3>5D Pose Estimation</h3>
+        <p>Extend 3D localization with orientation, giving full 5-DoF node poses relevant to de-leafing and harvesting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OCCLUSION / COMPLEXITY ============ -->
+<section id="challenge">
+  <div class="wrap">
+    <h2>Occlusion and Scene Complexity</h2>
+    <p class="lead">
+      In dense canopies, target nodes are visible from only a small fraction of viewpoints. This is where
+      informed viewpoint planning is expected to help, and where less challenging benchmarks do not
+      separate strong methods from weak ones.
+    </p>
+    <div class="feature reverse">
+      <div class="txt">
+        <h3>Stratified evaluation</h3>
+        <p style="color:var(--muted)">
+          Each annotated node has an occlusion score, defined as the fraction of surrounding viewpoints
+          from which it is hidden. Each plant has a complexity score. Results are reported separately for
+          the low, medium, and high terciles, which shows how a method holds up as scenes become harder.
+        </p>
+      </div>
+      <figure>
+        <img src="static/images/annotation.png" alt="Node annotations on a tomato plant image with zoomed detail">
+        <figcaption>Peduncle and petiole node annotations, with keypoints defining position and orientation.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BASELINES / RESULTS ============ -->
+<section id="results">
+  <div class="wrap">
+    <h2>Baselines and Results</h2>
+    <p class="lead">
+      Two reference baselines share one perception pipeline: a random viewpoint selector, and an active
+      planner that samples candidate views around a region of interest and picks the one with the highest
+      expected information gain.
+    </p>
+    <div class="feature">
+      <div class="txt">
+        <h3>Random versus active planning</h3>
+        <p style="color:var(--muted)">
+          The active planner improves node recall over the random baseline at every occlusion level, with
+          the largest gains on the least-occluded nodes. Both baselines still remain far from complete
+          reconstruction, which indicates the benchmark is challenging and leaves clear room for
+          improvement.
+        </p>
+      </div>
+      <figure>
+        <img src="static/images/node_recall_task3.png" alt="Node recall by occlusion level for active versus random planners">
+        <figcaption>Task III node recall by occlusion level, for active and random viewpoint planning.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOOLS / CODE ============ -->
+<section id="tools">
+  <div class="wrap">
+    <h2>Evaluation Code and Tools</h2>
+    <p class="lead">
+      The benchmark code is released in two repositories: one for the image-level tasks (I and II) and
+      one for the active-vision tasks (III and IV).
+    </p>
+
+    <h3 class="repo-head">Repository 1: <code>wur-av-bench-cocoeval</code>, image-level evaluation (Tasks I and II)</h3>
+    <div class="tools-stack">
+      <div class="tool tier1">
+        <h3>Background-aware COCO evaluation</h3>
+        <p>
+          A fork of faster-coco-eval that implements the background-aware detection protocol of Task I
+          and the distance-based keypoint criterion of Task II, where detections of background objects
+          are not punished and node keypoints are scored by pixel distance instead of OKS. It works as a
+          drop-in replacement for pycocotools.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="repo-head">Repository 2: <code>wur-av-bench</code>, active-vision evaluation (Tasks III and IV)</h3>
+    <div class="tools-stack">
+      <div class="tool tier1">
+        <h3>Evaluation <code>wur-av-bench eval</code></h3>
+        <p>
+          It matches predicted node reconstructions to the ground truth and
+          reports precision, recall, and F1 per viewpoint, stratified by plant complexity and node visibility, together with 3D
+          visualizations of matches and errors.
+        </p>
+      </div>
+
+      <div class="tool tier3">
+        <h3>Occlusion scoring <code>wur-av-bench visibility</code></h3>
+        <p>
+          Computes the per-node occlusion score by rendering each node from many sampled viewpoints. This
+          score is the basis for the occlusion-stratified evaluation.
+        </p>
+      </div>
+
+      <div class="tools-row">
+        <div class="tool tier3">
+          <h4>3D annotation tool <code>wur-av-bench annotate</code></h4>
+          <p>An Open3D tool for annotating 5-DoF node poses directly on point clouds.</p>
+        </div>
+        <div class="tool tier3">
+          <h4>Pose utilities <code>convert-pose</code> / <code>convert-axes</code> / <code>fit-stem-lines</code></h4>
+          <p>Convert keypoints to poses, switch between Open3D and ROS conventions, and fit per-plant detection filters.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      The dataset, the two code repositories, and the paper links above are placeholders and will be
+      activated once each resource is publicly released.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CITATION ============ -->
+<section id="cite">
+  <div class="wrap">
+    <h2>Citation</h2>
+    <p class="lead">Citation details will be added once the paper is published.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Agricultural Biosystems Engineering and Artificial Intelligence Group, Wageningen University &amp; Research</p>
+    <p>Contact: thomas.versmissen@wur.nl</p>
+  </div>
+</footer>
+
+</body>
+</html>
