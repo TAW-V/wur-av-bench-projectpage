@@ -149,24 +149,28 @@
     <div class="subcard">
       <h3>Data structure</h3>
       <pre class="tree">
-dataset/
-├── task1_task2/
-│   └── evaluation/
-│       ├── images/                          RGB images for Tasks I and II
-│       └── labels/
-│           └── labels_backgroundaware.json  segmentation masks and keypoints, with
-│                                            foreground and background classes
-├── task3_task4/
-│   ├── labels/                              one CSV per plant with 5-DoF node poses and
-│   │                                        occlusion and complexity scores
-│   └── viewpoint_data/                      one folder per plant with point clouds, RGB
-│                                            images and camera poses, plus the detection
-│                                            filter parameters
-└── detector_train_set/
-    ├── images/                              RGB training images
-    └── labels/
-        └── annotations.json                 segmentation masks and keypoints for
-                                             peduncle and petiole</pre>
+wur-av-bench-dataset/
+├── TaskI_and_TaskII/
+│   ├── evaluation/
+│   │   ├── images/                          RGB images for Tasks I and II
+│   │   ├── gt_labels/                       segmentation masks and keypoints, with
+│   │   │                                    foreground and background classes
+│   │   └── baseline_predictions/            predictions of the baseline detector
+│   └── train/
+│       ├── images/                          RGB training images
+│       └── annotations.json                 segmentation masks and keypoints for
+│                                            peduncle and petiole
+└── TaskIII_and_TaskIV/
+    ├── gt/                                  one CSV per plant with 5-DoF node poses and
+    │                                        occlusion and complexity scores
+    ├── baseline_runs/                       baseline predictions, 20 runs per plant
+    ├── detection_filter_params.json         detection filter regions per plant
+    ├── camera_intrinsics.txt                intrinsics of the colour camera
+    └── point_cloud_layout.txt               file formats of the viewpoint data
+
+viewpoint data (4TU.ResearchData)
+└── plantN/                                  per viewpoint an RGB image, an organized
+                                             point cloud and a camera pose</pre>
     </div>
 
     <div class="note">
