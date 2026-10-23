@@ -21,10 +21,11 @@
     <p class="subtitle">A real-world benchmark, dataset, and evaluation suite for active viewpoint planning under severe occlusion.</p>
 
     <div class="authors">
-      Thomas A. W. Versmissen<sup>1,2</sup>, &nbsp;Xin Wang<sup>1</sup>, &nbsp;Gert Kootstra<sup>1</sup>, &nbsp;Ricardo da Silva Torres<sup>2</sup>
+      Thomas A. W. Versmissen<sup>1,2</sup>, &nbsp;Xin Wang<sup>1,3</sup>, &nbsp;Ricardo da Silva Torres<sup>2</sup>, &nbsp;Gert Kootstra<sup>1</sup>
     </div>
     <div class="affil"><sup>1</sup> Agricultural Biosystems Engineering, Wageningen University &amp; Research</div>
     <div class="affil"><sup>2</sup> Artificial Intelligence Group, Wageningen University &amp; Research</div>
+    <div class="affil"><sup>3</sup> College of Engineering, China Agricultural University</div>
 
     <!-- ============================================================
          RESOURCE LINKS  —  fill in the href="#" placeholders once
@@ -239,21 +240,22 @@ dataset/
     <p class="lead">
       Two reference baselines share one perception pipeline: a random viewpoint selector, and an active
       planner that samples candidate views around a region of interest and picks the one with the highest
-      expected information gain.
+      expected information gain, combined with its distance to the viewpoints used so far. Both start from
+      the same first viewpoint, and each is run 20 times per plant.
     </p>
     <div class="feature">
       <div class="txt">
         <h3>Random versus active planning</h3>
         <p style="color:var(--muted)">
-          The active planner improves node recall over the random baseline at every occlusion level, with
-          the largest gains on the least-occluded nodes. Both baselines still remain far from complete
-          reconstruction, which indicates the benchmark is challenging and leaves clear room for
-          improvement.
+          The active planner reconstructs more nodes than the random baseline at every occlusion level, with
+          the largest difference for medium occlusion. Both planners lose about 30 percentage points from
+          low to highly occluded nodes, and both remain far from complete reconstruction, which indicates
+          the benchmark is challenging and leaves clear room for improvement.
         </p>
       </div>
       <figure>
-        <img src="static/images/node_recall_task3.png" alt="Node recall by occlusion level for active versus random planners">
-        <figcaption>Task III node recall by occlusion level, for active and random viewpoint planning.</figcaption>
+        <img src="static/images/node_recall_task3_v2.png" alt="Node recall by occlusion level for active versus random planners">
+        <figcaption>Task III node recall by occlusion level, for active and random viewpoint planning, over 20 runs per plant with 95% confidence intervals.</figcaption>
       </figure>
     </div>
   </div>
@@ -288,7 +290,9 @@ dataset/
         <p>
           It matches predicted node reconstructions to the ground truth and
           reports precision, recall, and F1 per viewpoint, stratified by plant complexity and node visibility, together with 3D
-          visualizations of matches and errors.
+          visualizations of matches and errors. For several runs per plant it adds bootstrap confidence
+          bands, and when two or more methods are evaluated it compares every pair with a Wilcoxon
+          signed-rank test.
         </p>
       </div>
 
